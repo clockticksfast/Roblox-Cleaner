@@ -3,6 +3,8 @@ import shutil
 import subprocess
 import ctypes
 import sys
+import requests
+import time
 
 def is_admin():
     """Check if the script is run as an administrator."""
@@ -136,6 +138,25 @@ print(f"- Registry keys deleted: {cleaned_registry_keys}")
 print(f"- Roblox instances deleted: {deleted_roblox_instances}")
 print(f"- Exploit instances deleted: {deleted_exploit_instances}")
 print(f"- Event logs cleared: {cleared_event_logs}")
-import time
-time.sleep(10)
+
+print("")
+print("Please wait as we reinstall roblox for you")
+installer_url = "https://github.com/clockticksfast/Roblox-Cleaner/raw/main/RobloxPlayerInstaller.exe"
+installer_path = os.path.join(os.getenv('TEMP'), "RobloxPlayerInstaller.exe")
+
+print("Downloading Roblox installer...")
+response = requests.get(installer_url)
+with open(installer_path, 'wb') as file:
+    file.write(response.content)
+print("Download complete.")
+
+print("Running Roblox installer...")
+subprocess.run([installer_path], check=True)
+
+# Clean up the installer file
+if os.path.exists(installer_path):
+    os.remove(installer_path)
+    print("Cleaned up installer file.")
 print('Exiting in 10 seconds...')
+
+time.sleep(10)
